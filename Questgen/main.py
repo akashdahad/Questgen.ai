@@ -107,7 +107,9 @@ class QGen:
             "input_text": payload.get("input_text"),
             "max_questions": payload.get("max_questions", 4)
         }
-
+        
+        print(payload)
+        print(inp)
         text = inp['input_text']
         sentences = tokenize_sentences(text)
         joiner = " "
@@ -115,7 +117,8 @@ class QGen:
 
 
         keywords = get_keywords(self.nlp,modified_text,inp['max_questions'],self.s2v,self.fdist,self.normalized_levenshtein,len(sentences) )
-
+           
+        print(keywords)
 
         keyword_sentence_mapping = get_sentences_for_keyword(keywords, sentences)
         
@@ -132,10 +135,12 @@ class QGen:
             
             generated_questions = generate_normal_questions(keyword_sentence_mapping,self.device,self.tokenizer,self.model)
             print(generated_questions)
-
+        
             
         final_output["statement"] = modified_text
         final_output["questions"] = generated_questions["questions"]
+        
+        print(final_output)
         
         if torch.device=='cuda':
             torch.cuda.empty_cache()
